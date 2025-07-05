@@ -1,0 +1,114 @@
+# Task B: Face Matching with Distorted Inputs
+
+## 🔍 Objective
+
+The objective of Task B is to develop a **face verification system** that can match distorted or altered face images to clean reference images of individuals. This is not a standard classification task but a matching/verification task.
+
+The system must:
+
+- Learn an embedding space where similar faces (same identity) are closer together.
+- Match distorted images to reference identities using **face embeddings and cosine similarity**.
+
+---
+
+## 📁 Dataset Structure
+
+```
+Comys_Hackathon5/
+├── Task_B/
+    ├── train/
+    │   ├── person1_frontal/
+    │   │   ├── image1.jpg
+    │   │   └── distortion/
+    │   │       ├── distorted_image1.jpg
+    │   └── person2_frontal/
+    │       └── ...
+    └── val/
+        ├── distorted/
+        │   ├── test_image1.jpg
+        └── ground_truth.csv
+```
+
+---
+
+## 🔧 Methodology
+
+### Step 1: Embedding Extraction
+
+- A pretrained model like **FaceNet** or **ResNet50** is used (without installing external packages).
+- Images are passed through the model to extract 128-D or 512-D feature embeddings.
+
+### Step 2: Reference Embedding Database
+
+- Each identity folder from `train/` is used to compute a **mean embedding** from all clean images.
+
+### Step 3: Matching Distorted Images
+
+- For each test image in `val/distorted/`, an embedding is computed.
+- Cosine similarity is used to match the test image embedding with each reference identity embedding.
+- The identity with **highest similarity score** is picked as predicted identity.
+- A **threshold** (e.g., 0.7) determines if it is a positive (match) or negative (no match).
+
+### Step 4: Evaluation
+
+- The results are compared with `ground_truth.csv`.
+- Metrics like **Accuracy, Precision, Recall, F1-Score** are computed using `sklearn.metrics`.
+
+---
+
+## 📈 Results (Example)
+
+| Metric    | Score |
+| --------- | ----- |
+| Accuracy  | 85.7% |
+| Precision | 87.2% |
+| Recall    | 84.0% |
+| F1-Score  | 85.6% |
+
+
+---
+
+## 📚 Requirements
+
+- Python 3.x
+- TensorFlow / Keras (preinstalled in Colab)
+- NumPy, Pandas, Scikit-learn
+
+---
+
+## 🔄 Run Instructions
+
+```python
+# Set dataset root
+ROOT_DIR = "/content/Comys_Hackathon5/Task_B"
+
+# Step 1: Extract embeddings from train images
+# Step 2: Extract embeddings from val/distorted/
+# Step 3: Match and evaluate
+```
+
+Make sure to update `ROOT_DIR` or image paths based on your current working directory.
+
+---
+
+## 📄 Output Format
+
+```json
+{
+  "image": "distorted_image1.jpg",
+  "matched_identity": "001_frontal",
+  "similarity": 0.8235,
+  "label": 1
+}
+```
+
+---
+
+## 💾 Submission Checklist
+
+-
+
+---
+
+For any issues, make sure paths and image formats are valid (e.g., no directories where image files are expected).
+
