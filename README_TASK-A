@@ -1,0 +1,91 @@
+
+# 📄 README_TaskA.md
+
+## 🎯 Task A: Gender Classification from Face Images
+
+---
+
+### 📁 Dataset Structure
+
+Organized in two folders — one for training and one for validation — each containing subfolders `male/` and `female/`:
+
+```
+/Comys_Hackathon5/Task A/
+├── train/
+│   ├── female/
+│   └── male/
+├── val/
+│   ├── female/
+│   └── male/
+```
+
+---
+
+### 🧠 Model Architecture
+
+| Component        | Description                                      |
+|------------------|--------------------------------------------------|
+| **Base Model**    | MobileNetV2 (pretrained on ImageNet)            |
+| **Input Shape**   | `(256, 256, 3)`                                  |
+| **Trainable Layers** | Only last 30 layers of MobileNetV2             |
+| **Top Layers**    | GlobalAveragePooling2D → Dense(128, ReLU) → Dropout(0.5) → Dense(1, Sigmoid) |
+| **Loss**          | Binary Crossentropy                              |
+| **Optimizer**     | Adam (learning rate: default)                    |
+| **Class Weights** | Applied: `{0: 2.44, 1: 0.63}` to balance gender classes |
+| **Image Augmentation** | Rotation, Zoom, Flip applied via `tf.keras.layers` |
+
+---
+
+### ⚙️ How to Run
+
+1. Upload this notebook to [Google Colab](https://colab.research.google.com/)
+2. Mount your Google Drive:
+   ```python
+   from google.colab import drive
+   drive.mount('/content/drive')
+   ```
+3. Change the dataset path:
+   ```python
+   data_dir = "/content/drive/MyDrive/Comys_Hackathon5/Task A/"
+   ```
+4. Run all cells to:
+   - Load and preprocess data
+   - Train MobileNetV2-based model
+   - Evaluate on validation set
+   - Plot confusion matrix and metrics
+
+---
+
+### 📊 Final Evaluation Metrics
+
+| Metric     | Female | Male  | Avg (Weighted) |
+|------------|--------|-------|----------------|
+| **Precision**  | 0.88   | 0.87  | 0.87           |
+| **Recall**     | 0.56   | 0.97  | 0.87           |
+| **F1-Score**   | 0.69   | 0.92  | 0.86           |
+| **Accuracy**   |        |       | **0.87**       |
+| **Support**    | 105    | 317   | 422            |
+
+---
+
+### 📉 Confusion Matrix
+
+```
+             Predicted
+           | Female | Male
+-----------|--------|------
+Actual     |
+Female     |   59   |  46
+Male       |    8   | 309
+```
+
+---
+
+### 🧪 Requirements
+
+- TensorFlow 2.x
+- NumPy
+- Matplotlib
+- scikit-learn
+
+No external installations are required when running on Google Colab.
